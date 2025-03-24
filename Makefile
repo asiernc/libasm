@@ -1,9 +1,17 @@
-SRCS		=	ft_strlen.s ft_strcmp.s ft_strcpy.s
+CC = gcc
+NA_FLAGS = -f
+ifeq ($(shell uname -m), arm64)
+    CC += -ld_classic --target=x86_64-apple-darwin
+	NA_FLAGS += macho64
+else
+	NA_FLAGS += elf64
+endif
+
+SRCS		=	ft_strlen.s ft_strcmp.s ft_strcpy.s ft_write.s
 OBJS		=	$(SRCS:.s=.o)
 
 
 NA			=	nasm
-NA_FLAGS	=	-f elf64
 FLAGS 		=	-Wall -Werror -Wextra
 NAME		=	libasm.a
 TEST		=	tester
@@ -15,7 +23,7 @@ all:			$(NAME)
 
 $(NAME):		$(OBJS)
 				ar rcs $(NAME) $(OBJS)
-				gcc $(FLAGS) -L. -o $(TEST) main.c -lasm
+				$(CC) $(FLAGS) -L. -o $(TEST) main.c -lasm
 
 clean:
 				rm -rf $(OBJS)
