@@ -7,7 +7,7 @@ else
 	NA_FLAGS += elf64
 endif
 
-SRCS		=	ft_strlen.s ft_strcmp.s ft_strcpy.s ft_write.s
+SRCS		=	ft_strlen.s ft_strcmp.s ft_strcpy.s ft_write.s ft_read.s ft_strdup.s
 OBJS		=	$(SRCS:.s=.o)
 
 
@@ -23,7 +23,7 @@ all:			$(NAME)
 
 $(NAME):		$(OBJS)
 				ar rcs $(NAME) $(OBJS)
-				$(CC) $(FLAGS) -L. -o $(TEST) main.c -lasm
+				$(CC) $(FLAGS) -L. -o $(TEST) main.c -lasm -no-pie
 
 clean:
 				rm -rf $(OBJS)
