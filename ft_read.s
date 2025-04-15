@@ -10,7 +10,7 @@ ft_read:
 
 	neg rax ;abs value
 	mov rdi, rax
-	call __errno_location
+	call __errno_location wrt ..plt
 	mov [rax], rdi ;save err code in __errno
 	mov rax, -1
 

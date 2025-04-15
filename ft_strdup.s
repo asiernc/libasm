@@ -4,44 +4,48 @@ section .text
 	extern __errno_location
 
 ft_strdup:
+	push rbx
 	cmp rdi, 0
 	je .error
-
-	mov rsi, rdi
-	xor rcx, rcx
+		
+	mov rbx, rdi ; rdx original src
+	xor rcx, rcx;
 
 .len_loop:
-	cmp byte [rsi + rcx], 0
+	cmp byte [rbx + rcx], 0
 	je .allocate
 	inc rcx
 	jmp .len_loop
 
 .allocate:
-	inc rcx ; +1 '\0'
+	inc rcx
 	mov rdi, rcx
-	call malloc
-	test rax, rax ; if malloc returns error
+	call malloc wrt ..plt
+	test rax, rax ;
 	je .error
 	
 	mov rdi, rax ; char * dest
-
-	xor rcx, rcx ; rcx (i) == 0
+	mov rsi, rbx ; 
+	
+	xor rcx, rcx ;
 
 .copy_loop:
 	mov al, [rsi + rcx]
 	mov [rdi + rcx], al
 	inc rcx
-	test al, al
+	cmp al, 0
 	jne .copy_loop
 
+	mov rax, rdi
+	pop rbx
 	ret
 
 .error:
-	call __errno_location
-	test rax, rax
-	je .return_null
+	call __errno_location wrt ..plt
 	mov dword [rax], 12
-
-.return_null:
 	xor rax, rax
+	pop rbx
+
 	ret
+
+

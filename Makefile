@@ -10,7 +10,6 @@ endif
 SRCS		=	ft_strlen.s ft_strcmp.s ft_strcpy.s ft_write.s ft_read.s ft_strdup.s
 OBJS		=	$(SRCS:.s=.o)
 
-
 NA			=	nasm
 FLAGS 		=	-Wall -Werror -Wextra
 NAME		=	libasm.a
@@ -19,11 +18,11 @@ TEST		=	tester
 %.o:			%.s
 				$(NA) $(NA_FLAGS) $<
 
-all:			$(NAME)
+all:			$(NAME) $(create_file)
 
 $(NAME):		$(OBJS)
 				ar rcs $(NAME) $(OBJS)
-				$(CC) $(FLAGS) -L. -o $(TEST) main.c -lasm -no-pie
+				$(CC) $(FLAGS) -L. -o $(TEST) main.c -lasm
 
 clean:
 				rm -rf $(OBJS)
@@ -35,6 +34,5 @@ re:				fclean $(NAME)
 
 test:			$(NAME)
 				./$(TEST)
-
 
 .PHONY:			clean fclean re test

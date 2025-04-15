@@ -5,8 +5,6 @@ ft_strcpy:
 	test rdi, rdi
 	je .done
 
-	mov rax, rsi
-
 .loop:
 	cmp byte [rsi], 0
 	je .done
