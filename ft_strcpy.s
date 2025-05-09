@@ -2,18 +2,25 @@ section .text
 	global ft_strcpy ;
 
 ft_strcpy:
+	; rdi => dest
+	; rsi => src
 	test rdi, rdi
-	je .done
+	je .done_empty
+	test rsi, rsi
+	je .done_empty
+	mov rax, rdi
 
 .loop:
-	cmp byte [rsi], 0
-	je .done
 	mov al, [rsi]
 	mov [rdi], al
 	inc rdi
 	inc rsi
+	test al, al
 	jmp .loop
 
 .done:
-	mov byte [rdi], 0
+	ret
+
+.done_empty:
+	xor rax, rax
 	ret

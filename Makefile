@@ -18,11 +18,12 @@ TEST		=	tester
 %.o:			%.s
 				$(NA) $(NA_FLAGS) $<
 
-all:			$(NAME) $(create_file)
 
-$(NAME):		$(OBJS)
+$(NAME):		$(OBJS) main.c
 				ar rcs $(NAME) $(OBJS)
 				$(CC) $(FLAGS) -L. -o $(TEST) main.c -lasm
+
+all:			$(NAME)
 
 clean:
 				rm -rf $(OBJS)

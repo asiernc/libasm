@@ -6,13 +6,18 @@ ft_read:
 	mov rax, 0
 	syscall
 	cmp rax, 0
-	jns .done ; jump not signe(pos)
+	jl .handle_error
 
-	neg rax ;abs value
-	mov rdi, rax
-	call __errno_location wrt ..plt
-	mov [rax], rdi ;save err code in __errno
-	mov rax, -1
-
-.done:
 	ret
+
+.handle_error:
+	push rax;
+
+	call __errno_location wrt ..plt
+	mov rdi, rax
+	pop     rax             ; restore syscall result (-errno)
+    neg     rax             ; get positive errno value
+    mov     [rdi], eax      ; set errno
+
+    mov     rax, -1
+    ret

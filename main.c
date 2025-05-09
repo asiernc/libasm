@@ -16,7 +16,7 @@ char 	*ft_strdup(const char *src);
 
 void	test_ft_strlen() {
 	printf("Testing ft_strlen... \n");
-	const char *str = "Hello, world!";
+	const char *str = "asier";
 
 	int result = ft_strlen(str);
 	int expected = strlen(str);
@@ -24,15 +24,17 @@ void	test_ft_strlen() {
 	STRLEN(str);
 	if (result == expected)
 		printf("ft_strlen: PASSED\n");
-	else
+	else {
 		printf("ft_strlen: FAILED\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	test_ft_strcmp() {
 	printf("Testing ft_strcmp... \n");
 
-	const char *s1 = "Hello";
-	const char *s2 = "Hello";
+	const char *s1 = "hola";
+	const char *s2 = "hola";
 
 	int result = ft_strcmp(s1, s2);
 	int expected = strcmp(s1, s2);
@@ -40,31 +42,39 @@ void	test_ft_strcmp() {
 	printf("Input: '%s', '%s', Result: %d, Expected: %d\n", s1, s2, result, expected);
 	if (result == expected)
 		printf("ft_strcmp: PASSED\n");
-	else
+	else {
 		printf("ft_strcmp: FAILED\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void test_ft_strcpy() {
 	printf("\nTesting ft_strcpy...\n");
 	char dest[100];
-	const char *src = "Copy this string!";
+	const char *src = NULL;
 	ft_strcpy(dest, src);
 	printf("Source: '%s', Destination: '%s'\n", src, dest);
-	if (strcmp(dest, src) == 0)
+	if (ft_strcmp(dest, src) == 0)
 		printf("ft_strcpy: PASSED\n");
-	else
+	else {
 		printf("ft_strcpy: FAILED\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void test_ft_write() {
 	printf("\nTesting ft_write...\n");
 	const char *msg = "Hello, ft_write!\n";
+	//int fd = open("test_file.txt", O_WRONLY);
+	//int bytes_written = ft_write(fd, msg, strlen(msg));
 	int bytes_written = ft_write(1, msg, strlen(msg));
 	printf("Bytes written: %d\n", bytes_written);
 	if (bytes_written == (int)strlen(msg))
 		printf("ft_write: PASSED\n");
-	else
+	else {
 		printf("ft_write: FAILED\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void test_ft_read() {
@@ -74,23 +84,26 @@ void test_ft_read() {
 	int fd = open("test_file.txt", O_RDONLY);
 	if (fd == -1) {
 		perror("Error opening file");
-		return;
+		exit(EXIT_FAILURE);
 	}
 
 	int bytes_read = ft_read(fd, buffer, sizeof(buffer) - 1);
 	if (bytes_read == -1) {
 		perror("Error reading file");
 		close(fd);
+		exit(EXIT_FAILURE);
 		return;
 	}
 	buffer[bytes_read] = '\0';
 
 	printf("Bytes read: %d, Content: '%s'\n", bytes_read, buffer);
 	close(fd);
-	if (bytes_read > 0)
+	if (bytes_read >= 0)
 		printf("ft_read: PASSED\n");
-	else
+	else {
 		printf("ft_read: FAILED\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void test_ft_strdup() {
@@ -107,12 +120,19 @@ void test_ft_strdup() {
 
 	if (dup && strcmp(dup, src) == 0)
 		printf("ft_strdup: PASSED\n");
-	else
+	else {
 		printf("ft_strdup: FAILED\n");
+		exit(EXIT_FAILURE);
+	}
 	free(dup);
 }
 
 int main(void) {
+	int fd = open("test_file.txt", O_WRONLY | O_APPEND | O_CREAT, 0644);
+	if (fd < 0) {
+		perror("Error:");
+		return 1;
+	}
 	test_ft_strlen();
 	test_ft_strcmp();
 	test_ft_strcpy();

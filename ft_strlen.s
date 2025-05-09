@@ -2,6 +2,8 @@ section .text
 	global ft_strlen ;
 
 ft_strlen:
+	test rdi, rdi
+	je .pointer_is_null
 	xor rax, rax
 
 .loop:
@@ -12,4 +14,7 @@ ft_strlen:
 	jmp .loop
 
 .done:
+	ret
+
+.pointer_is_null:
 	ret
